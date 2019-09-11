@@ -1,0 +1,35 @@
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<h1 class="title">{{ title }}</h1>
+<ul *ngIf="mode=='list'">
+  <p *ngIf="todos.length==0"><small>Nenhuma tarefa hoje, gostaria de adicionar uma nova?</small></p>
+  <li *ngFor='let todo of todos'>
+    <i class="fa fa-check"></i>
+    {{todo.title}}
+    <button *ngIf="!todo.done" (click)="markDone(todo)">Concluir tarefa</button>
+    <button *ngIf="todo.done" (click)="markUndone(todo)">Concluida. Refazer?</button>
+    <button (click)="remove(todo)">Remover tarefa</button>
+  </li>
+</ul>
+
+<div id="modal" *ngIf="mode=='add'">
+  <h1 class="text-center">Nova Tarefa</h1>
+  <form [formGroup]='form'>
+    <input type="text" placeholder="Titulo da Tarefa" formControlName="title">
+    <small class="danger" *ngIf="form.controls.title.invalid && !form.controls.title.pristine">Este campo deve conter entre 3 e 60
+      caracteres<br></small>
+    <p class="text-center">
+      <button class="button" [disabled]="form.invalid" (click)="addTask()"><i class="fa fa-save"></i> Adicionar tarefa</button>
+    </p>
+  </form>
+  <br><br>
+</div>
+
+<button class="add-button" (click)="changeMode('add')" *ngIf="mode=='list'">
+  <i class="fa fa-plus"></i>
+  Nova Tarefa
+</button>
+<button class="add-button" (click)="changeMode('list')" *ngIf="mode=='add'">
+  <i class=" fa fa-times"></i>
+  Cancelar
+</button>
